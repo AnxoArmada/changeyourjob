@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :tests
+
   devise_for :users
   root "pages#home"
   get "team" => "pages#team"

@@ -1,0 +1,9 @@
+<p id="notice"><%= notice %></p>
+
+<p class="well">
+  <strong>Description:</strong>
+  <%= @test.description %>
+</p>
+
+<%= link_to 'Edit', edit_test_path(@test), class: "btn btn-default" %> |
+<%= link_to 'Back', tests_path, class: "btn btn-default" %>
