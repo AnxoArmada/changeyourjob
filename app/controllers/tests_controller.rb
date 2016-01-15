@@ -1,5 +1,7 @@
 class TestsController < ApplicationController
   before_action :set_test, only: [:show, :edit, :update, :destroy]
+  before_action :correct_user, only: [:edit, :update, :destroy]
+  before_action :authenticate_user!, except: [:index, :show]
 
   respond_to :html
 
@@ -13,7 +15,7 @@ class TestsController < ApplicationController
   end
 
   def new
-    @test = Test.new
+    @test = current_user.tests.build
     respond_with(@test)
   end
 
@@ -21,7 +23,7 @@ class TestsController < ApplicationController
   end
 
   def create
-    @test = Test.new(test_params)
+    @test = current_user.tests.build(test_params)
     flash[:notice] = 'Pin was successfully created.' if @test.save
     respond_with(@test)
   end
@@ -39,6 +41,11 @@ class TestsController < ApplicationController
   private
     def set_test
       @test = Test.find(params[:id])
+    end
+
+    def correct_user
+      @test = current_user.tests.find_by(id: params[:id])
+      redirect_to tests_path, notice: "No authorized to edit this pin." if @test.nil?
     end
 
     def test_params
